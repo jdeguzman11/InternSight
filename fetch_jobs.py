@@ -56,4 +56,7 @@ for skills_list in dataframe["skills"]:
 
 skill_counts = Counter(all_skills)
 
-print(skill_counts.most_common(10))
+print("\n Top Skills Across Jobs:\n")
+
+for skill, count in skill_counts.most_common(10):
+    print(f"{skill}: {count}")
