@@ -2,11 +2,11 @@
 
 # send HTTP requests to websites/APIs
 import requests
+# jobs list into a pandas dataframe
+import pandas as pd
 
-url = "https://boards-api.greenhouse.io/v1/boards/stripe/jobs"
-
+url = "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=true"
 response = requests.get(url)
-
 data = response.json()
 
 jobs = []
@@ -17,8 +17,13 @@ for job in data["jobs"]:
         "company": job["company_name"],
         "location": job["location"]["name"],
         "date": job["first_published"],
-        "link": job["absolute_url"]
+        "link": job["absolute_url"],
+        "content": job["content"]
     }
 
     jobs.append(job_info)
 
+dataframe = pd.DataFrame(jobs)
+dataframe.to_csv("data/jobs.cv", index=False)
+
+print(dataframe.head())
