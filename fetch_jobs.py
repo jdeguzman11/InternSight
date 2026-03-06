@@ -8,6 +8,8 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import html
 
+from extract_skills import extract_skills
+
 
 def clean_html(html_text):
     decoded = html.unescape(html_text)
@@ -28,7 +30,8 @@ for job in data["jobs"]:
         "location": job["location"]["name"],
         "date": job["first_published"],
         "link": job["absolute_url"],
-        "content": clean_html(job.get("content", ""))
+        "content": clean_html(job.get("content", "")),
+        "skills": extract_skills(clean_html(job["content"]))
     }
 
     jobs.append(job_info)
