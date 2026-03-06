@@ -7,6 +7,8 @@ import pandas as pd
 # HTML cleaner
 from bs4 import BeautifulSoup
 import html
+# most common skills
+from collections import Counter
 
 from extract_skills import extract_skills
 
@@ -37,6 +39,21 @@ for job in data["jobs"]:
     jobs.append(job_info)
 
 dataframe = pd.DataFrame(jobs)
+dataframe = dataframe[
+    dataframe["title"].str.contains(
+        "engineer|developer|data|machine learning|ai|software|analyst",
+        case=False,
+        na=False
+    )
+]
+
 dataframe.to_csv("data/jobs.csv", index=False)
 
-print(dataframe.head())
+all_skills = []
+
+for skills_list in dataframe["skills"]:
+    all_skills.extend(skills_list)
+
+skill_counts = Counter(all_skills)
+
+print(skill_counts.most_common(10))
